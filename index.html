@@ -4073,7 +4073,10 @@ function kBanner(){
 
 /* ---------- S.B düyməsi və müəllim paneli ---------- */
 function sbBtn(){return `<button class="sbbtn" onclick="go('sb')" aria-label="Müəllim paneli">N.B</button>`}
-let TKEY=lsG('kea-tkey',''),PN={list:null,f:'',q:'',err:'',load:false};
+const ckG=k=>{const m=document.cookie.match('(?:^|; )'+k+'=([^;]*)');return m?decodeURIComponent(m[1]):''};
+const ckS=(k,v)=>{try{document.cookie=k+'='+encodeURIComponent(v)+';path=/;max-age='+(v?31536000*3:0)+';SameSite=Lax'+(location.protocol==='https:'?';Secure':'')}catch(e){}};
+const tkSet=v=>{TKEY=v;lsS('kea-tkey',v);ckS('kea_tkey',v)};
+let TKEY=lsG('kea-tkey','')||ckG('kea_tkey'),PN={list:null,f:'',q:'',err:'',load:false};
 function sbOpen(){stopTTS();if(!TKEY)return sbLogin();if(PN.tab==='fb')return pnFb();panelView()}
 function sbLogin(err){
   app.innerHTML=`<div class="wrap kgate"><div class="top"><button class="back" onclick="go('')">← Geri</button><h2>Müəllim paneli</h2></div>
@@ -4090,11 +4093,11 @@ async function sbDoLogin(){
   if(!SHEET_URL)return sbLogin('Google Cədvəl hələ qoşulmayıb.');
   const b=document.getElementById('sbgo');if(b){b.disabled=true;b.textContent='Yoxlanılır…'}
   try{const o=await kApi({a:'tlogin',p});
-    if(o&&o.ok&&o.key){TKEY=o.key;lsS('kea-tkey',TKEY);PN.list=null;TFB.rows=null;return panelView()}
+    if(o&&o.ok&&o.key){tkSet(o.key);PN.list=null;TFB.rows=null;return panelView()}
     sbLogin(o&&o.error==='wait'?'Çox səhv cəhd. 15 dəqiqə sonra yenidən yoxlayın.':o&&o.error==='nopass'?'Şifrə hələ Kod.gs faylında yazılmayıb.':'Şifrə səhvdir.');
   }catch(e){sbLogin('İnternet bağlantısını yoxlayın.')}
 }
-function sbLogout(){TKEY='';lsS('kea-tkey','');PN.list=null;go('')}
+function sbLogout(){tkSet('');PN.list=null;go('')}
 const uSt=u=>{const now=Date.now();if(u.blok)return 'blok';if(+u.bitir)return +u.bitir>now?'paid':'exp';return now-(+u.qeyd||0)>TRIAL_DAYS*DAY?'end':'trial'};
 const ST_LBL={trial:['🎁','Pulsuz sınaqda','#0E7C86'],paid:['💳','Abunəçi','#1E8E4E'],exp:['⌛','Abunəsi bitib','#B26A00'],end:['⛔','Sınağı bitib','#C0392B'],blok:['🚫','Bloklanıb','#7A1F2B']};
 function uTag(u){const s=uSt(u),l=ST_LBL[s],now=Date.now();let x='';
@@ -4104,7 +4107,7 @@ function uTag(u){const s=uSt(u),l=ST_LBL[s],now=Date.now();let x='';
 async function pnLoad(){
   PN.err='';PN.load=true;
   try{const o=await kApi({a:'list',key:TKEY});
-    if(o&&o.ok)PN.list=o.rows||[];else if(o&&o.error==='key'){TKEY='';lsS('kea-tkey','');return sbLogin('Sessiya bitib, yenidən daxil olun.')}else PN.err='Xəta: '+((o&&o.error)||'');
+    if(o&&o.ok)PN.list=o.rows||[];else if(o&&o.error==='key'){tkSet('');return sbLogin('Sessiya bitib, yenidən daxil olun.')}else PN.err='Xəta: '+((o&&o.error)||'');
   }catch(e){PN.err='Məlumatı yükləmək alınmadı. İnterneti yoxlayın.'}
   PN.load=false;
 }
@@ -4127,21 +4130,29 @@ async function panelView(reload){
   <p class="kfine" style="text-align:left;margin:4px 0 10px">💰 Ödəniş edənlər (ümumi): <b>${money}</b> · təxmini gəlir: <b>${money*10} AZN</b></p>
   <div class="pnbar"><button class="btn main" onclick="panelView(true)">↻ Yenilə</button><button class="btn" onclick="pnCsv()">📥 Excel</button></div>
   <details class="pntpl"><summary>📝 WhatsApp mesaj şablonu</summary><p class="kfine" style="text-align:left">💬 düyməsinə basanda WhatsApp bu mətnlə açılır. <b>{ad}</b> yerinə şəxsin adı yazılır.</p><textarea id="pntpl" rows="4">${esc(waTplK())}</textarea><button class="btn" onclick="lsS('kea-watpl',document.getElementById('pntpl').value);tToastK('💾 Yadda saxlandı')">💾 Yadda saxla</button></details>
-  <input class="pnq" placeholder="Axtar: ad, soyad və ya nömrə…" value="${esc(PN.q)}" oninput="PN.q=this.value;clearTimeout(window._pq);window._pq=setTimeout(()=>{panelView();const i=document.querySelector('.pnq');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}},300)">
-  <p class="kfine" style="text-align:left;margin:0 0 8px">Göstərilir: <b>${rows.length}</b></p>
-  <div id="pnList">${rows.map(u=>{const s=uSt(u),t=esc(u.tel);return `<div class="urow ${s}">
-    <div class="uh"><b>${esc(u.ad)} ${esc(u.soyad)}</b>${uTag(u)}</div>
-    <div class="um"><a href="tel:+994${t}">📞 ${kFmtTel(u.tel)}</a> · Qeydiyyat: ${kDT(u.qeyd)}<br>Son giriş: ${kDT(u.son)} · ${esc(u.cihaz||'')}${+u.odenis?` · 💳 Ödəniş: ${kD(u.odenis)}`:''}</div>
-    <div class="ub">${s==='paid'?`<button class="ubtn gh" onclick="pnAct('unpay','${t}',this)">↩ Ödənişi ləğv et</button><button class="ubtn pay" onclick="pnAct('pay','${t}',this)">➕ 1 il əlavə et</button>`:`<button class="ubtn pay" onclick="pnAct('pay','${t}',this)">💳 Ödədi (1 il)</button>`}
-    ${u.blok?`<button class="ubtn ok" onclick="pnAct('unblok','${t}',this)">✅ Blokdan çıxar</button>`:`<button class="ubtn bl" onclick="pnAct('blok','${t}',this)">🚫 Blokla</button>`}
-    <a class="ubtn wa" href="https://wa.me/994${t}?text=${encodeURIComponent(waTplK().replace(/\{ad\}/g,u.ad||''))}" target="_blank" rel="noopener">💬</a>
-    <button class="ubtn gh" onclick="pnDel('${t}',this)">🗑</button></div></div>`}).join('')||'<p class="kinfo">Heç kim yoxdur.</p>'}</div></div>`;
+  <input class="pnq" placeholder="Axtar: ad, soyad və ya nömrə…" value="${esc(PN.q)}" type="search" autocomplete="off" oninput="PN.q=this.value;clearTimeout(window._pq);window._pq=setTimeout(pnFilter,250)">
+  <p class="kfine" style="text-align:left;margin:0 0 8px">Göstərilir: <b id="pnCnt">${rows.length}</b></p>
+  <div id="pnList">${pnRows(rows)}</div></div>`;
   app.innerHTML=h;window.scrollTo(0,same?y:0);
 }
+function pnRows(rows){const now=Date.now();return rows.map(u=>{const s=uSt(u),t=esc(u.tel);return `<div class="urow ${s}">
+    <div class="uh"><b>${esc(u.ad)} ${esc(u.soyad)}</b>${uTag(u)}</div>
+    <div class="um"><a href="tel:+994${t}">📞 ${kFmtTel(u.tel)}</a> · Qeydiyyat: ${kDT(u.qeyd)}<br>Son giriş: ${kDT(u.son)} · ${esc(u.cihaz||'')}${+u.odenis?` · 💳 Ödəniş: ${kD(u.odenis)}`:''}</div>
+    <div class="ub">${+u.bitir>now?`<button class="ubtn" disabled style="opacity:.75">✓ Ödənilib · ${kD(u.bitir)}-dək</button><button class="ubtn gh" onclick="pnAct('unpay','${t}',this)">↩ Ödənişi ləğv et</button>`:`<button class="ubtn pay" onclick="pnAct('pay','${t}',this)">💳 Ödədi (1 il)</button>`}
+    ${u.blok?`<button class="ubtn ok" onclick="pnAct('unblok','${t}',this)">✅ Blokdan çıxar</button>`:`<button class="ubtn bl" onclick="pnAct('blok','${t}',this)">🚫 Blokla</button>`}
+    <a class="ubtn wa" href="https://wa.me/994${t}?text=${encodeURIComponent(waTplK().replace(/\{ad\}/g,u.ad||''))}" target="_blank" rel="noopener">💬</a>
+    <button class="ubtn gh" onclick="pnDel('${t}',this)">🗑</button></div></div>`}).join('')||'<p class="kinfo">Heç kim yoxdur.</p>'}
+/* axtarış: yalnız siyahı yenilənir, yazı xanası toxunulmur – klaviatura dəyişmir */
+function pnFilter(){const L=PN.list||[],q=PN.q.trim().toLowerCase(),d=q.replace(/\D/g,'');
+  if(!q)return panelView();
+  const rows=L.filter(u=>(`${u.ad} ${u.soyad} ${u.tel} ${kFmtTel(u.tel)}`).toLowerCase().includes(q)||(d&&String(u.tel).includes(d))).sort((a,b)=>(+b.son||+b.qeyd||0)-(+a.son||+a.qeyd||0));
+  const l=document.getElementById('pnList'),c=document.getElementById('pnCnt');if(l)l.innerHTML=pnRows(rows);if(c)c.textContent=rows.length;
+  document.querySelectorAll('.pnstats button.on').forEach(b=>b.classList.remove('on'))}
 async function pnAct(a,tel,b){
   const u=(PN.list||[]).find(x=>String(x.tel)===String(tel));if(!u)return;const old=JSON.stringify(u);
   const now=Date.now();
-  if(a==='pay'){u.odenis=now;u.bitir=Math.max(now,+u.bitir||0)+365*DAY;u.blok=false}
+  if(b)b.disabled=true;
+  if(a==='pay'){if(+u.bitir>now)return;u.odenis=now;u.bitir=now+365*DAY;u.blok=false}
   if(a==='unpay'){u.odenis=0;u.bitir=0}
   if(a==='blok')u.blok=true;if(a==='unblok')u.blok=false;
   panelView();
@@ -4215,7 +4226,7 @@ const fbSt=f=>f.st||'Yeni';
 async function pnFb(reload){
   const y=window.scrollY,same=!!document.getElementById('fbList');
   if(!TFB.rows||reload){if(!same)app.innerHTML=`<div class="wrap"><div class="top"><button class="back" onclick="go('')">← Geri</button><h2>Rəylər</h2></div><p class="kinfo">Yüklənir…</p></div>`;
-    TFB.err='';try{const o=await kApi({a:'fbs',key:TKEY});if(o&&o.ok)TFB.rows=o.rows||[];else if(o&&o.error==='key'){TKEY='';lsS('kea-tkey','');return sbLogin('Sessiya bitib, yenidən daxil olun.')}else TFB.err='Xəta: '+((o&&o.error)||'')}catch(e){TFB.err='Yükləmək alınmadı. İnterneti yoxlayın.'}}
+    TFB.err='';try{const o=await kApi({a:'fbs',key:TKEY});if(o&&o.ok)TFB.rows=o.rows||[];else if(o&&o.error==='key'){tkSet('');return sbLogin('Sessiya bitib, yenidən daxil olun.')}else TFB.err='Xəta: '+((o&&o.error)||'')}catch(e){TFB.err='Yükləmək alınmadı. İnterneti yoxlayın.'}}
   const A=(TFB.rows||[]).slice().sort((a,b)=>(+b.at||0)-(+a.at||0)),F=TFB.f;
   const inF=(f,k)=>k==='Arxiv'?fbSt(f)==='Arxiv':k?fbSt(f)===k:fbSt(f)!=='Arxiv';
   const L=A.filter(f=>inF(f,F));
