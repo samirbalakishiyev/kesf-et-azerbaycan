@@ -314,6 +314,12 @@ img,svg,video{max-width:100%}
 </svg>
 <div id="app"></div>
 <script>
+/* ---- avtomatik yeniləmə: saytda yeni versiya varsa özü yenilənir ---- */
+const APP_VER='2026-11-19-1';
+(function(){let busy=0;async function chk(){if(busy||location.protocol!=='https:')return;busy=1;
+  try{const r=await fetch(location.pathname+'?u='+Date.now(),{cache:'no-store'});const t=await r.text();const m=t.match(/APP_VER='([^']+)'/);
+    if(m&&m[1]!==APP_VER){const k='kea-upd-'+m[1];if(!sessionStorage.getItem(k)){sessionStorage.setItem(k,1);location.reload()}}}catch(e){}busy=0}
+  window.addEventListener('load',()=>setTimeout(chk,1500));document.addEventListener('visibilitychange',()=>{if(!document.hidden)chk()})})();
 /* ============ MƏLUMAT ============ */
 const BLOCKS=[
 {id:'umumi',title:'Azərbaycan haqqında',emoji:'🇦🇿',color:'#0098D4',
