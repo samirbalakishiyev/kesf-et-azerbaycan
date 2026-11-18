@@ -3930,7 +3930,7 @@ function initials(n){return n.replace(/[“”]/g,'').split(/\s+/).filter(w=>/^[
 /* Google Apps Script veb-tətbiqinin linki (Kod.gs quraşdırılandan sonra bura yazılır). Boşdursa: yalnız bu cihazda işləyir. */
 const SHEET_URL='https://script.google.com/macros/s/AKfycbwVxwLk1O_CopZQMtuOhCh37eLm0CTD-0Q3YhZTSxcY4Us2joXHEB1lpVtJcSiDw2I3bw/exec';
 const TRIAL_DAYS=2, PRICE='10 AZN';
-const PAY_TEL='558325982', SAMIR_TEL='557958625';
+const PAY_TEL='558325982';
 const lsG=(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}};
 const lsS=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 let REG=lsG('kea-reg',null);          /* {ad,soyad,tel,at} */
@@ -4050,7 +4050,7 @@ function lockScreen(){
   <p class="kpaytel">+994 55 832 59 82</p>
   ${SHEET_URL?`<button class="btn kchk" onclick="kCheck(this)">${K('paid')}</button>`:''}
   ${LKMSG?`<p class="kmsg">${esc(LKMSG)}</p>`:''}
-  <p class="kfine">${K('contact')}: <a href="https://wa.me/994${SAMIR_TEL}" target="_blank" rel="noopener">Samir Balakişiyev · 055 795 86 25</a></p></section></div>`;
+  <p class="kfine">${K('contact')}: <a href="https://wa.me/994${PAY_TEL}" target="_blank" rel="noopener">Natavan Balakişiyeva · 055 832 59 82</a></p></section></div>`;
   window.scrollTo(0,0);
 }
 async function kCheck(b){b.disabled=true;b.textContent=K('checking');LKMSG='';const o=await kPing();if(!o)LKMSG=K('offline');else if(kLocked())LKMSG=K('still');if(kLocked())lockScreen()}
@@ -4429,7 +4429,7 @@ function home(){
     <button class="tile story-tile ${sst==='new'?'':sst}" onclick="go('hekayeler')"><span class="num">${TOT}</span><span class="emo">📖</span><h3>${U('stories')}</h3><span class="sub">${STORIES.length} ${U('storiesSub')}</span><span class="st">${(S.read||[]).length} / ${STORIES.length} ${U('read')}</span></button>
     ${numsHTML()}
     <button class="danger" onclick="askReset('all')">${U('resetAll')}</button>
-    <footer class="credit">Created by <b>Samir Balakişiyev</b><br><a href="https://wa.me/994557958625" target="_blank" rel="noopener">WhatsApp: 055-795-8625</a></footer>
+    <footer class="credit">Created by <b>Natavan Balakişiyeva</b></footer>
   </div>`;
 }
 function topBar(title,back){return `<div class="top"><button class="back" onclick="go('${back}')">${U('back')}</button><h2>${title}</h2>${langSw()}</div>`}
