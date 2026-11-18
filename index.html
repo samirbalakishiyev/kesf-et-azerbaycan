@@ -17,7 +17,7 @@
 <meta property="og:description" content="18 blok · 918 test · 28 hekayə · 4 dil">
 <meta property="og:image" content="https://samirbalakishiyev.github.io/kesf-et-azerbaycan/og.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta property="og:url" content="https://samirbalakishiyev.github.io/kesf-et-azerbaycan/"><meta property="og:type" content="website"><meta property="og:site_name" content="Kəşf et Azərbaycan">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Kəşf et Azərbaycan">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://samirbalakishiyev.github.io/kesf-et-azerbaycan/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -4073,12 +4073,12 @@ function kBanner(){
 }
 
 /* ---------- S.B düyməsi və müəllim paneli ---------- */
-function sbBtn(){return `<button class="sbbtn" onclick="go('sb')" aria-label="Müəllim paneli">S.B</button>`}
+function sbBtn(){return `<button class="sbbtn" onclick="go('sb')" aria-label="Müəllim paneli">N.B</button>`}
 let TKEY=lsG('kea-tkey',''),PN={list:null,f:'',q:'',err:'',load:false};
 function sbOpen(){stopTTS();if(!TKEY)return sbLogin();if(PN.tab==='fb')return pnFb();panelView()}
 function sbLogin(err){
   app.innerHTML=`<div class="wrap kgate"><div class="top"><button class="back" onclick="go('')">← Geri</button><h2>Müəllim paneli</h2></div>
-  <section class="kcard"><div class="sbbig">S.B</div><p class="kinfo" style="text-align:center">Yalnız müəllim üçün</p>
+  <section class="kcard"><div class="sbbig">N.B</div><p class="kinfo" style="text-align:center">Yalnız müəllim üçün</p>
   <form onsubmit="event.preventDefault();sbDoLogin()"><input id="sbp" type="password" class="kinp" autocomplete="current-password" placeholder="Şifrə"><button class="cta" id="sbgo" type="submit" style="margin-top:10px">Daxil ol</button></form>
   <p class="kerr">${esc(err||'')}</p>${SHEET_URL?'':'<p class="kfine">Google Cədvəl hələ qoşulmayıb (SHEET_URL boşdur).</p>'}</section></div>`;
   const i=document.getElementById('sbp');if(i)i.focus();
