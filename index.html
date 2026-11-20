@@ -298,6 +298,9 @@ img,svg,video{max-width:100%}
 .fbrep{margin-top:10px;padding:10px 12px;border-radius:12px;background:#E3F4E8;color:#1E4D2E}.fbrep.nw{box-shadow:0 0 0 2px #1E8E4E}.fbrep b{display:block}.fbrep small{opacity:.8}.fbrep p{margin:4px 0 0;white-space:pre-wrap}
 .pntabs{display:flex;gap:8px;margin:4px 0 10px}.pntabs button{flex:1;padding:11px;border-radius:14px;font-weight:800;background:var(--card);border:2px solid var(--line);color:var(--ink)}.pntabs button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}.pntabs b{background:#C0392B;color:#fff;border-radius:999px;padding:1px 7px;font-size:13px}
 .fbfil{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}.fbfil button{padding:7px 10px;border-radius:999px;font-weight:700;font-size:13.5px;background:var(--card);border:2px solid var(--line);color:var(--ink)}.fbfil button.on{background:var(--ink);color:var(--bg)}
+.cprow{display:flex;justify-content:flex-end;margin:-6px 0 10px}
+.cpbtn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;font-weight:800;font-size:14px;color:#0E2A52;background:#fff;box-shadow:0 0 0 2px rgba(0,181,226,.6),0 4px 12px rgba(0,0,0,.25)}
+.cpbtn.ok{background:#1E8E4E;color:#fff;box-shadow:0 0 0 2px #fff}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -315,7 +318,7 @@ img,svg,video{max-width:100%}
 <div id="app"></div>
 <script>
 /* ---- avtomatik yeniləmə: saytda yeni versiya varsa özü yenilənir ---- */
-const APP_VER='2026-11-19-1';
+const APP_VER='2026-11-20-1';
 (function(){let busy=0;async function chk(){if(busy||location.protocol!=='https:')return;busy=1;
   try{const r=await fetch(location.pathname+'?u='+Date.now(),{cache:'no-store'});const t=await r.text();const m=t.match(/APP_VER='([^']+)'/);
     if(m&&m[1]!==APP_VER){const k='kea-upd-'+m[1];if(!sessionStorage.getItem(k)){sessionStorage.setItem(k,1);location.reload()}}}catch(e){}busy=0}
@@ -4263,6 +4266,16 @@ function pnTabs(cur){const n=(TFB.rows||[]).filter(f=>fbSt(f)==='Yeni').length;
   return `<div class="top"><button class="back" onclick="go('')">← Geri</button><h2>Müəllim paneli</h2><button class="back" onclick="sbLogout()">Çıxış</button></div>
   <div class="pntabs"><button class="${cur==='u'?'on':''}" onclick="PN.tab='u';panelView()">👥 Abunəçilər</button><button class="${cur==='fb'?'on':''}" onclick="PN.tab='fb';pnFb()">✍️ Rəylər${n?` <b>${n}</b>`:''}</button></div>`}
 
+/* ---- 🔗 tətbiqin linkini kopyala ---- */
+const APP_LINK='https://samirbalakishiyev.github.io/kesf-et-azerbaycan/';
+const CPT=()=>({az:{b:'Linki kopyala',ok:'✓ Link kopyalandı'},tr:{b:'Linki kopyala',ok:'✓ Bağlantı kopyalandı'},en:{b:'Copy link',ok:'✓ Link copied'},ru:{b:'Копировать ссылку',ok:'✓ Ссылка скопирована'}}[LG]||{b:'Linki kopyala',ok:'✓ Link kopyalandı'});
+async function copyLink(btn){
+  let ok=false;
+  try{await navigator.clipboard.writeText(APP_LINK);ok=true}catch(e){}
+  if(!ok){try{const t=document.createElement('textarea');t.value=APP_LINK;t.setAttribute('readonly','');t.style.cssText='position:fixed;top:0;left:0;opacity:0';document.body.appendChild(t);t.select();t.setSelectionRange(0,99999);ok=document.execCommand('copy');t.remove()}catch(e){}}
+  if(ok){const sp=btn.querySelector('span'),old=sp.textContent;btn.classList.add('ok');sp.textContent=CPT().ok;setTimeout(()=>{btn.classList.remove('ok');sp.textContent=old},2200)}
+  else prompt(CPT().b,APP_LINK);
+}
 /* ============ GÖRÜNÜŞLƏR ============ */
 const app=document.getElementById('app');
 let lastResult=null;
@@ -4413,6 +4426,7 @@ function home(){
     <svg class="band flagband" width="100%" height="36" aria-label="Azərbaycan bayrağı"><rect width="100%" height="12" fill="#00B5E2"/><rect y="12" width="100%" height="12" fill="#EF3340"/><rect y="24" width="100%" height="12" fill="#509E2F"/><svg x="50%" overflow="visible"><circle cx="-1.6" cy="18" r="4.6" fill="#fff"/><circle cx="-0.45" cy="18" r="3.85" fill="#EF3340"/><polygon points="3.10,15.70 3.50,17.03 4.73,16.37 4.07,17.60 5.40,18.00 4.07,18.40 4.73,19.63 3.50,18.97 3.10,20.30 2.70,18.97 1.47,19.63 2.13,18.40 0.80,18.00 2.13,17.60 1.47,16.37 2.70,17.03" fill="#fff"/></svg></svg>
     <div class="hero-in">
       <div class="hrow"><img class="eagle" src="eagle.png" alt="Kəşf et Azərbaycan">${langSw()}${sbBtn()}</div>
+      <div class="cprow"><button class="cpbtn" onclick="copyLink(this)">🔗 <span>${CPT().b}</span></button></div>
       <h1>${U('app')}</h1>
       <p>${U('sub')}</p>
       <div class="meter">${[...st,sst].map(s=>`<span class="${s==='new'?'':s}"></span>`).join('')}</div>
