@@ -319,6 +319,16 @@ img,svg,video{max-width:100%}
 .yopt i{flex-shrink:0;width:1.7em;height:1.7em;border-radius:12px;display:grid;place-items:center;background:#0E2A52;color:#fff;font-style:normal;font-size:.8em}
 .yopt.ok{background:#DDF5E4;box-shadow:0 0 0 5px #2E9E4A}.yopt.ok b{margin-left:auto;color:#1E8E4E;font-size:1.2em}.yopt.dim{opacity:.45}
 .yfb{margin:16px 0 0;font-size:clamp(15px,2vw,22px);color:#CFE0F5;font-weight:600}.ywho{margin:14px 0 4px;font-weight:800;color:#F0C85A;font-size:clamp(16px,2vw,22px)}.yup{color:#FF8A95;font-weight:900;font-size:clamp(20px,3vw,32px);margin:16px 0 0}
+.dgame{padding-top:10px}.dq{font-size:clamp(24px,3.6vw,48px);margin:10px 0 14px;text-align:center}
+.dsplit{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media (max-width:700px){.dsplit{grid-template-columns:1fr}}
+.dside{border:4px solid var(--c);border-radius:22px;padding:12px;background:rgba(255,255,255,.05);touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.dhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:clamp(18px,2.4vw,30px)}.dhead em{font-style:normal;font-weight:900;background:var(--c);color:#fff;min-width:1.8em;text-align:center;border-radius:12px;padding:2px 10px}
+.dopts{display:grid;gap:10px}
+.dopt{display:flex;align-items:center;gap:12px;width:100%;min-height:clamp(54px,11vh,120px);text-align:left;padding:14px 16px;border-radius:16px;border:0;background:#fff;color:#14203F;font:inherit;font-weight:800;font-size:clamp(17px,2.2vw,28px);cursor:pointer;touch-action:manipulation}
+.dopt i{flex-shrink:0;width:1.7em;height:1.7em;border-radius:10px;display:grid;place-items:center;background:var(--c);color:#fff;font-style:normal;font-size:.8em}
+.dopt:disabled{cursor:default}.dopt.sel{box-shadow:0 0 0 5px var(--c)}.dopt.dim{opacity:.45}.dopt.ok{background:#DDF5E4;box-shadow:0 0 0 5px #2E9E4A;opacity:1}.dopt.bad{background:#FFE1E4;box-shadow:0 0 0 5px #EF3340;opacity:1}
+.dres{margin-top:10px;text-align:center;font-weight:800;font-size:clamp(16px,2vw,24px);color:#CFE0F5;min-height:1.4em}.dres.ok{color:#7CE39A}.dres.no{color:#FF8A95}
+.dshow{opacity:.85}
 .ygame .cta{margin-top:16px;max-width:520px;display:block;margin-left:auto;margin-right:auto;background:#F0C85A;color:#2A2000;font-size:clamp(18px,2.4vw,26px)}
 .yend{text-align:center;position:relative;overflow:hidden;padding-top:40px}.ytro{font-size:clamp(70px,12vw,140px)}.ywl{margin:0;color:#F0C85A;font-weight:800;font-size:clamp(20px,3vw,32px)}.ywn{margin:6px 0 20px;font-family:"Noto Serif Display",Georgia,serif;font-size:clamp(34px,7vw,80px);color:#fff}
 .yres{max-width:560px;margin:0 auto;display:grid;gap:10px}.yrow{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:16px;background:rgba(255,255,255,.08);border:3px solid var(--c);font-size:clamp(18px,2.4vw,26px)}.yrow b{flex:1;text-align:left}.yrow em{font-style:normal;font-weight:900;color:var(--c)}
@@ -352,7 +362,7 @@ html.board .ygame{zoom:1}
 <div id="app"></div>
 <script>
 /* ---- avtomatik yeniləmə: saytda yeni versiya varsa özü yenilənir ---- */
-const APP_VER='2026-11-21-4';
+const APP_VER='2026-11-21-5';
 (function(){let busy=0;async function chk(){if(busy||location.protocol!=='https:')return;busy=1;
   try{const r=await fetch(location.pathname+'?u='+Date.now(),{cache:'no-store'});const t=await r.text();const m=t.match(/APP_VER='([^']+)'/);
     if(m&&m[1]!==APP_VER){const k='kea-upd-'+m[1];if(!sessionStorage.getItem(k)){sessionStorage.setItem(k,1);location.reload()}}}catch(e){}busy=0}
@@ -4317,14 +4327,14 @@ async function copyLink(btn){
 }
 /* ---------- 🏆 Sinif yarışı: komanda oyunu (ağıllı lövhə / proyektor üçün) ---------- */
 const YT={
-az:{btn:'🏆 Sinif yarışı',title:'Sinif yarışı',hint:'Ağıllı lövhədə və ya proyektorda açın. Sinfi komandalara bölün, sualı oxuyun, düz cavab verən komandaya xal yazın.',teams:'Komanda sayı',names:'Komandaların adları',topic:'Mövzu',mix:'🎲 Qarışıq – bütün mövzular',count:'Sual sayı',timer:'Hər suala vaxt',noT:'Vaxtsız',sec:'san',start:'▶ Yarışı başla',q:'Sual',reveal:'👁 Cavabı göstər',who:'Kim düz cavab verdi? Komandaya toxunun:',next:'Növbəti sual →',fin:'🏁 Nəticəni göstər',timeUp:'Vaxt bitdi!',win:'Qalib',tie:'Heç-heçə!',again:'↻ Yenidən oyna',home:'Ana səhifə',end:'Oyunu bitir',pts:'xal',sure:'Oyun bitsin?',def:['Qartallar','Şahinlər','Ceyranlar','Pələnglər']},
-tr:{btn:'🏆 Sınıf yarışması',title:'Sınıf yarışması',hint:'Akıllı tahtada veya projeksiyonda açın. Sınıfı takımlara ayırın, soruyu okuyun, doğru cevap veren takıma puan verin.',teams:'Takım sayısı',names:'Takım adları',topic:'Konu',mix:'🎲 Karışık – tüm konular',count:'Soru sayısı',timer:'Soru başına süre',noT:'Süresiz',sec:'sn',start:'▶ Yarışmayı başlat',q:'Soru',reveal:'👁 Cevabı göster',who:'Kim doğru bildi? Takıma dokunun:',next:'Sonraki soru →',fin:'🏁 Sonucu göster',timeUp:'Süre doldu!',win:'Kazanan',tie:'Berabere!',again:'↻ Tekrar oyna',home:'Ana sayfa',end:'Oyunu bitir',pts:'puan',sure:'Oyun bitsin mi?',def:['Kartallar','Şahinler','Ceylanlar','Kaplanlar']},
-en:{btn:'🏆 Class contest',title:'Class contest',hint:'Open it on a smartboard or projector. Split the class into teams, read the question and give a point to each team that answers correctly.',teams:'Number of teams',names:'Team names',topic:'Topic',mix:'🎲 Mixed – all topics',count:'Questions',timer:'Time per question',noT:'No timer',sec:'s',start:'▶ Start the contest',q:'Question',reveal:'👁 Show the answer',who:'Who got it right? Tap a team:',next:'Next question →',fin:'🏁 Show results',timeUp:'Time is up!',win:'Winner',tie:'It’s a draw!',again:'↻ Play again',home:'Home',end:'End game',pts:'pts',sure:'End the game?',def:['Eagles','Falcons','Gazelles','Tigers']},
-ru:{btn:'🏆 Классное соревнование',title:'Классное соревнование',hint:'Откройте на интерактивной доске или проекторе. Разделите класс на команды, читайте вопрос и давайте балл команде с верным ответом.',teams:'Число команд',names:'Названия команд',topic:'Тема',mix:'🎲 Смешанно – все темы',count:'Вопросов',timer:'Время на вопрос',noT:'Без таймера',sec:'с',start:'▶ Начать соревнование',q:'Вопрос',reveal:'👁 Показать ответ',who:'Кто ответил верно? Нажмите на команду:',next:'Следующий вопрос →',fin:'🏁 Показать итоги',timeUp:'Время вышло!',win:'Победитель',tie:'Ничья!',again:'↻ Играть снова',home:'Главная',end:'Завершить',pts:'балл.',sure:'Завершить игру?',def:['Орлы','Соколы','Джейраны','Тигры']}};
+az:{btn:'🏆 Sinif yarışı',title:'Sinif yarışı',hint:'Ağıllı lövhədə və ya proyektorda açın. Sinfi komandalara bölün, sualı oxuyun, düz cavab verən komandaya xal yazın.',teams:'Komanda sayı',names:'Komandaların adları',topic:'Mövzu',mix:'🎲 Qarışıq – bütün mövzular',count:'Sual sayı',timer:'Hər suala vaxt',noT:'Vaxtsız',sec:'san',start:'▶ Yarışı başla',q:'Sual',reveal:'👁 Cavabı göstər',who:'Kim düz cavab verdi? Komandaya toxunun:',next:'Növbəti sual →',fin:'🏁 Nəticəni göstər',timeUp:'Vaxt bitdi!',win:'Qalib',tie:'Heç-heçə!',again:'↻ Yenidən oyna',home:'Ana səhifə',end:'Oyunu bitir',pts:'xal',sure:'Oyun bitsin?',def:['Qartallar','Şahinlər','Ceyranlar','Pələnglər'],mode:'Oyun növü',mHost:'🧑‍🏫 Müəllim xal yazır',mDuel:'⚔️ Duel – 2 komanda lövhədə',duelHint:'Lövhə ikiyə bölünür: hər komanda öz tərəfində cavabına toxunur, ikisi də eyni anda cavab verə bilər. Düz cavab +1 xal, birinci düz cavab verən komanda əlavə +1 ⚡ alır.',wait:'Cavab gözlənilir…',locked:'Cavab verildi ✓',first:'⚡ Birinci!',right:'Düz! +',wrong:'Səhv',none:'Cavab yoxdur'},
+tr:{btn:'🏆 Sınıf yarışması',title:'Sınıf yarışması',hint:'Akıllı tahtada veya projeksiyonda açın. Sınıfı takımlara ayırın, soruyu okuyun, doğru cevap veren takıma puan verin.',teams:'Takım sayısı',names:'Takım adları',topic:'Konu',mix:'🎲 Karışık – tüm konular',count:'Soru sayısı',timer:'Soru başına süre',noT:'Süresiz',sec:'sn',start:'▶ Yarışmayı başlat',q:'Soru',reveal:'👁 Cevabı göster',who:'Kim doğru bildi? Takıma dokunun:',next:'Sonraki soru →',fin:'🏁 Sonucu göster',timeUp:'Süre doldu!',win:'Kazanan',tie:'Berabere!',again:'↻ Tekrar oyna',home:'Ana sayfa',end:'Oyunu bitir',pts:'puan',sure:'Oyun bitsin mi?',def:['Kartallar','Şahinler','Ceylanlar','Kaplanlar'],mode:'Oyun türü',mHost:'🧑‍🏫 Öğretmen puan verir',mDuel:'⚔️ Düello – tahtada 2 takım',duelHint:'Tahta ikiye bölünür: her takım kendi tarafında cevaba dokunur, iki takım aynı anda cevap verebilir. Doğru cevap +1, ilk doğru cevaplayan takım +1 ⚡ daha alır.',wait:'Cevap bekleniyor…',locked:'Cevap verildi ✓',first:'⚡ İlk!',right:'Doğru! +',wrong:'Yanlış',none:'Cevap yok'},
+en:{btn:'🏆 Class contest',title:'Class contest',hint:'Open it on a smartboard or projector. Split the class into teams, read the question and give a point to each team that answers correctly.',teams:'Number of teams',names:'Team names',topic:'Topic',mix:'🎲 Mixed – all topics',count:'Questions',timer:'Time per question',noT:'No timer',sec:'s',start:'▶ Start the contest',q:'Question',reveal:'👁 Show the answer',who:'Who got it right? Tap a team:',next:'Next question →',fin:'🏁 Show results',timeUp:'Time is up!',win:'Winner',tie:'It’s a draw!',again:'↻ Play again',home:'Home',end:'End game',pts:'pts',sure:'End the game?',def:['Eagles','Falcons','Gazelles','Tigers'],mode:'Game type',mHost:'🧑‍🏫 Teacher gives points',mDuel:'⚔️ Duel – 2 teams at the board',duelHint:'The board is split in two: each team taps its answer on its own side, and both can answer at the same time. A correct answer is +1, and the first team to answer correctly gets an extra +1 ⚡.',wait:'Waiting for answer…',locked:'Answered ✓',first:'⚡ First!',right:'Correct! +',wrong:'Wrong',none:'No answer'},
+ru:{btn:'🏆 Классное соревнование',title:'Классное соревнование',hint:'Откройте на интерактивной доске или проекторе. Разделите класс на команды, читайте вопрос и давайте балл команде с верным ответом.',teams:'Число команд',names:'Названия команд',topic:'Тема',mix:'🎲 Смешанно – все темы',count:'Вопросов',timer:'Время на вопрос',noT:'Без таймера',sec:'с',start:'▶ Начать соревнование',q:'Вопрос',reveal:'👁 Показать ответ',who:'Кто ответил верно? Нажмите на команду:',next:'Следующий вопрос →',fin:'🏁 Показать итоги',timeUp:'Время вышло!',win:'Победитель',tie:'Ничья!',again:'↻ Играть снова',home:'Главная',end:'Завершить',pts:'балл.',sure:'Завершить игру?',def:['Орлы','Соколы','Джейраны','Тигры'],mode:'Режим игры',mHost:'🧑‍🏫 Баллы ставит учитель',mDuel:'⚔️ Дуэль – 2 команды у доски',duelHint:'Доска делится пополам: каждая команда нажимает ответ на своей стороне, обе могут отвечать одновременно. Верный ответ +1, первая ответившая верно команда получает ещё +1 ⚡.',wait:'Ждём ответ…',locked:'Ответ принят ✓',first:'⚡ Первые!',right:'Верно! +',wrong:'Неверно',none:'Нет ответа'}};
 const Y=k=>(YT[LG]||YT.az)[k];
 const YCOL=['#00B5E2','#EF3340','#3C9A32','#E89B00'];
 let YR=lsG('kea-yaris',null);
-let YCFG=lsG('kea-ycfg',{n:2,names:null,topic:'',count:10,t:20});
+let YCFG=lsG('kea-ycfg',{n:2,names:null,topic:'',count:10,t:20,mode:'duel'});if(!YCFG.mode)YCFG.mode='duel';
 const ySave=()=>lsS('kea-yaris',YR);
 function yStop(){if(window._yt){clearInterval(window._yt);window._yt=null}}
 function yarisBtn(){return `<button class="pill gold" onclick="go('yaris')">${Y('btn')}</button>`}
@@ -4340,7 +4350,9 @@ function ySetup(){
   const chip=(k,v,lab)=>`<button class="ych ${c[k]===v?'on':''}" onclick="YCFG.${k}=${v};lsS('kea-ycfg',YCFG);ySetup()">${lab}</button>`;
   app.innerHTML=`<div class="wrap ywrap">${topBar(Y('title'),'')}
   <section class="kcard"><p class="kinfo" style="margin:0">${Y('hint')}</p></section>
-  <section class="kcard"><h3 class="yh">${Y('teams')}</h3><div class="ychs">${[2,3,4].map(n=>chip('n',n,n)).join('')}</div>
+  <section class="kcard"><h3 class="yh">${Y('mode')}</h3><div class="ychs"><button class="ych ${c.mode==='duel'?'on':''}" onclick="YCFG.mode='duel';YCFG.n=2;lsS('kea-ycfg',YCFG);ySetup()">${Y('mDuel')}</button><button class="ych ${c.mode!=='duel'?'on':''}" onclick="YCFG.mode='host';lsS('kea-ycfg',YCFG);ySetup()">${Y('mHost')}</button></div>
+  ${c.mode==='duel'?`<p class="kinfo" style="margin:10px 0 0">${Y('duelHint')}</p>`:''}
+  ${c.mode==='duel'?'':`<h3 class="yh">${Y('teams')}</h3><div class="ychs">${[2,3,4].map(n=>chip('n',n,n)).join('')}</div>`}
   <h3 class="yh">${Y('names')}</h3><div class="ynames">${[0,1,2,3].slice(0,c.n).map(i=>`<label class="yname" style="--c:${YCOL[i]}"><i></i><input id="yn${i}" maxlength="18" value="${esc(names[i])}" aria-label="${Y('names')} ${i+1}"></label>`).join('')}</div>
   <h3 class="yh">${Y('topic')}</h3><select id="ytp" class="ysel" onchange="YCFG.topic=this.value;lsS('kea-ycfg',YCFG)">${opts}</select>
   <h3 class="yh">${Y('count')}</h3><div class="ychs">${[10,15,20].map(n=>chip('count',n,n)).join('')}</div>
@@ -4353,11 +4365,13 @@ function yStart(){
   c.names=nm;lsS('kea-ycfg',c);
   let pool=Object.keys(Q).filter(k=>!c.topic||k.startsWith(c.topic+'-'));
   pool=shuffle(pool).slice(0,c.count);
-  YR={st:'q',teams:nm.slice(0,c.n).map((n,i)=>({n,c:YCOL[i],s:0})),order:pool,idx:0,o:shuffle([1,2,3,4]),got:[],t:c.t,left:c.t,topic:c.topic};
+  const duel=c.mode==='duel';
+  YR={st:'q',mode:duel?'duel':'host',teams:nm.slice(0,duel?2:c.n).map((n,i)=>({n,c:YCOL[i],s:0})),order:pool,idx:0,o:shuffle([1,2,3,4]),got:[],t:c.t,left:c.t,topic:c.topic};
+  if(duel)yDuelReset();
   ySave();yGame();
 }
 function yGame(){
-  yStop();
+  yStop();if(YR.mode==='duel')return dGame();
   const qid=YR.order[YR.idx];if(!qid){YR.st='end';ySave();return yEnd()}
   const q=qL(qid),{b,it}=Q[qid],rev=YR.st==='rev',last=YR.idx===YR.order.length-1;
   const board=YR.teams.map((t,i)=>{const g=YR.got.includes(i);return `<button class="yteam ${g?'got':''} ${rev?'tap':''}" style="--c:${t.c}" ${rev?`onclick="yGot(${i})"`:'disabled'}><span>${esc(t.n)}</span><b>${t.s+(g?1:0)}</b>${g?'<em>+1</em>':''}</button>`}).join('');
@@ -4373,11 +4387,43 @@ function yGame(){
   if(!rev&&YR.t&&YR.left>0){window._yt=setInterval(()=>{YR.left--;ySave();const e=document.getElementById('ytm');if(!e){yStop();return}
     e.textContent=YR.left;e.style.setProperty('--p',YR.left/YR.t);if(YR.left<=5)e.classList.add('low');if(YR.left<=0){yStop();yBeep();yReveal()}},1000)}
 }
+
+/* ---- ⚔️ Duel: iki komanda eyni anda, lövhənin iki tərəfində ---- */
+function yDuelReset(){YR.ord=[shuffle([1,2,3,4]),shuffle([1,2,3,4])];YR.ans=[null,null];YR.t0=Date.now();YR.left=YR.t;YR.st='q'}
+function dSide(i,rev){const t=YR.teams[i],a=YR.ans[i],q=qL(YR.order[YR.idx]);
+  const res=rev?(a?(a.ok?`<div class="dres ok">${Y('right')}${a.pts}${a.first?' · '+Y('first'):''}</div>`:`<div class="dres no">✗ ${Y('wrong')}</div>`):`<div class="dres no">${Y('none')}</div>`):`<div class="dres">${a?Y('locked'):Y('wait')}</div>`;
+  return `<div class="dhead"><b>${esc(t.n)}</b><em>${t.s}</em></div>
+  <div class="dopts">${YR.ord[i].map((oi,k)=>{const mine=a&&a.oi===oi,cls=rev?(oi===1?'ok':(mine?'bad':'dim')):(mine?'sel':(a?'dim':''));
+    return `<button class="dopt ${cls}" ${a||rev?'disabled':''} onpointerdown="dPick(event,${i},${oi})"><i>${'ABCD'[k]}</i><span>${q[oi]}</span></button>`}).join('')}</div>${res}`}
+function dGame(){
+  yStop();
+  const qid=YR.order[YR.idx];if(!qid){YR.st='end';ySave();return yEnd()}
+  if(!YR.ord)yDuelReset();
+  const q=qL(qid),{b}=Q[qid],rev=YR.st==='rev',last=YR.idx===YR.order.length-1;
+  app.innerHTML=`<div class="ygame dgame">
+  <div class="ytop"><button class="back" onclick="yQuit()">${Y('end')}</button><div class="yqn">${Y('q')} ${YR.idx+1} / ${YR.order.length}<small>${b.emoji} ${esc(BTt(b))}</small></div>${YR.t&&!rev?`<div class="ytm" id="ytm" style="--p:${YR.left/YR.t}">${YR.left}</div>`:'<div style="width:64px"></div>'}</div>
+  <h1 class="yq dq">${q[0]}</h1>
+  <div class="dsplit">${[0,1].map(i=>`<section class="dside" id="ds${i}" style="--c:${YR.teams[i].c}">${dSide(i,rev)}</section>`).join('')}</div>
+  ${rev?`<button class="cta" onclick="dNext()">${last?Y('fin'):Y('next')}</button>`:`${YR.t&&YR.left<=0?`<p class="yup">${Y('timeUp')}</p>`:''}<button class="cta dshow" onclick="dReveal()">${Y('reveal')}</button>`}
+  </div>`;
+  if(!rev&&YR.t&&YR.left>0){window._yt=setInterval(()=>{YR.left--;ySave();const e=document.getElementById('ytm');if(!e){yStop();return}
+    e.textContent=YR.left;e.style.setProperty('--p',YR.left/YR.t);if(YR.left<=5)e.classList.add('low');if(YR.left<=0){yStop();yBeep();dReveal()}},1000)}
+}
+function dPick(ev,i,oi){if(ev)ev.preventDefault();if(YR.st!=='q'||YR.ans[i])return;
+  YR.ans[i]={oi,ok:oi===1,at:Date.now()};ySave();
+  const el=document.getElementById('ds'+i);if(el)el.innerHTML=dSide(i,false);
+  if(YR.ans[0]&&YR.ans[1])setTimeout(dReveal,600)}
+function dReveal(){if(YR.st!=='q')return;yStop();
+  const ok=[0,1].filter(i=>YR.ans[i]&&YR.ans[i].ok).sort((a,b)=>YR.ans[a].at-YR.ans[b].at);
+  ok.forEach((i,k)=>{const a=YR.ans[i];a.first=k===0;a.pts=a.first?2:1;YR.teams[i].s+=a.pts});
+  YR.st='rev';ySave();dGame();if(ok.length)yDing()}
+function yDing(){try{const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.frequency.value=880;g.gain.value=.12;o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.18)}catch(e){}}
+function dNext(){YR.idx++;if(YR.idx>=YR.order.length){YR.st='end';ySave();return yEnd()}yDuelReset();ySave();dGame()}
 function yBeep(){try{const a=new (window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.frequency.value=660;g.gain.value=.15;o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.35)}catch(e){}}
 function yReveal(){yStop();YR.st='rev';ySave();yGame()}
 function yGot(i){YR.got=YR.got.includes(i)?YR.got.filter(x=>x!==i):YR.got.concat(i);ySave();yGame()}
 function yNext(){YR.got.forEach(i=>YR.teams[i].s++);YR.got=[];YR.idx++;YR.o=shuffle([1,2,3,4]);YR.left=YR.t;YR.st=YR.idx>=YR.order.length?'end':'q';ySave();if(YR.st==='end')return yEnd();yGame()}
-function yQuit(){if(YR&&YR.st!=='end'&&!confirm(Y('sure')))return;yStop();YR.got.forEach(i=>YR.teams[i].s++);YR.got=[];YR.st='end';ySave();yEnd()}
+function yQuit(){if(YR&&YR.st!=='end'&&!confirm(Y('sure')))return;yStop();if(YR.mode==='duel'){YR.st='end';ySave();return yEnd()}YR.got.forEach(i=>YR.teams[i].s++);YR.got=[];YR.st='end';ySave();yEnd()}
 function yEnd(){
   yStop();if(!YR)return ySetup();
   const T=YR.teams.slice().sort((a,b)=>b.s-a.s),top=T[0].s,w=T.filter(t=>t.s===top),tie=w.length>1;
@@ -4587,7 +4633,6 @@ function home(){
         const lab=s==='done'?`✓ ${U('lDone')}${x.best!=null?' – '+U('best')+' '+x.best+'%':''}`:s==='part'?`${U('lPart')} – ${Object.values(x.run.ans).filter(a=>a.p!=null).length}/${x.run.order.length}`:U('start');
         return `<button class="tile bonus ${s==='new'?'':s}" style="--bc:${b.color}" onclick="go('blok-${b.id}')"><span class="num">★</span><span class="emo">${b.emoji}</span><h3>${BTt(b)}</h3><span class="desc">${BTi(b)}</span><span class="sub">${b.items.length} ${U('topics')}, ${nq} ${U('qs')}</span><span class="st">${lab}</span></button>`}).join('')}</div>
     ${(()=>{const b=BONUS.find(x=>x.tales);if(!b)return '';const s=status(b.id);return `<h2 class="bonush">📚 ${BTt(b)} <span class="agetag">8–15 ${LG==='ru'?'лет':LG==='en'?'yrs':'yaş'}</span></h2><button class="tile story-tile tales ${s==='new'?'':s}" style="--bc:${b.color}" onclick="go('blok-${b.id}')"><span class="num">📚</span><span class="emo">🧚</span><h3>${BTt(b)}</h3><span class="desc">${BTi(b)}</span><span class="sub">${b.items.length} ${LG==='az'?'nağıl':LG==='tr'?'masal':LG==='ru'?'сказок':'tales'}, ${b.items.length*3} ${U('qs')}</span></button>`})()}
-    ${numsHTML()}
     <button class="danger" onclick="askReset('all')">${U('resetAll')}</button>
     <footer class="credit">Created by <b>Natavan Balakişiyeva</b></footer>
   </div>`;
